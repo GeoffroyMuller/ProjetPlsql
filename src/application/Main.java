@@ -1,5 +1,9 @@
 package application;
 	
+import java.sql.SQLException;
+
+import bdd.DataBase;
+import bdd.dao.DaoVol;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -25,6 +29,17 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+
+//		DataBase.connexion("root", "root");
+//		DataBase.chargerProcedure();
+//		DataBase.compilerProcedure();
+//		try {
+//			DaoVol.getInstance().programmer("V2", "30/12/2021 08:00", "355");
+//			System.out.println("sss");
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		launch(args);
 	}
 }

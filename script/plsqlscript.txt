@@ -1,0 +1,12 @@
+CREATE OR REPLACE PROCEDURE Programmer (noVol IN VARCHAR2, DateHeureDep IN DATE, DV IN NUMBER) IS
+datedepassee exception;
+BEGIN
+if dateheuredep < SYSDATE then
+  raise datedepassee;
+end if;
+INSERT INTO DepartVol
+VALUES(novol, DateHeureDep, DV);
+EXCEPTION
+    WHEN datedepassee then
+        dbms_output.put_line('Date et heure de départ ne peuvent êtres dépassés!');
+ END;
