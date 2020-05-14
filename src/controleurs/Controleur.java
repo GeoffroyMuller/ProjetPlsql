@@ -87,6 +87,7 @@ public class Controleur {
 
 	@FXML
 	public void Executer() {
+		Message("","#1d5d8e");
 		try {
 			if(rb_progVol.isSelected()) {
 				DaoVol.getInstance().programmer(
@@ -105,15 +106,24 @@ public class Controleur {
 			}
 			Message("Procédure PL/SQL terminée.",
 					"#21bc5d");
-		} catch (SQLIntegrityConstraintViolationException e) {
+		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
-			Message("Erreur : violation de contrainte unique. Elément identique dans la base.",
+			Message("Erreur : NumberFormatException : le format du nombre correspondant à l'un des paramètre est incorrect",
 					"#bf2222");
-			e.printStackTrace();
+			//e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			Message("Erreur : IllegalArgumentException : la date entrée devrais être supperieur à la date system",
+					"#bf2222");
+			//e.printStackTrace();
+		} catch (SQLIntegrityConstraintViolationException e) {
+			Message("Erreur : SQLIntegrityConstraintViolationException : violation de contrainte unique. Elément identique dans la base.",
+					"#bf2222");
+			//e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Message("Erreur : verifier les format des données entrées.",
+			//e.printStackTrace();
+			Message("Erreur : SQLException : verifier les format des données entrées.",
 					"#bf2222");
 		}
 	}
