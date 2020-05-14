@@ -10,3 +10,55 @@ EXCEPTION
     WHEN datedepassee then
         dbms_output.put_line('Date et heure de dÃ©part ne peuvent Ãªtres dÃ©passÃ©s!');
  END;
+ create or replace PROCEDURE AffecterPersonnel (no_Vol IN VARCHAR2, DateHeureDep IN DATE, Mat IN NUMBER) IS
+verifvolexist NUMBER; 
+verifpersonnelexist NUMBER; 
+verifpersonnelnondispo NUMBER; 
+
+personnelexiste EXCEPTION;
+volexiste EXCEPTION;
+personnelnondispo EXCEPTION;
+BEGIN
+
+  select count(*) INTO verifvolexist 
+  from DepartVol -- Variable verifvolexist
+  where DateHeureDepart=DateHeureDep
+  and NoVol=no_Vol; -- qui vaut 0 si le vol n’existe pas
+
+  if (verifvolexist = 0) then
+    raise volexiste;
+  end if;
+
+  select count(*) INTO verifpersonnelexist 
+  from Personnel -- Variable personnelexist
+  where Matricule=Mat; -- qui vaut 0 si le personnel n’existe pas
+
+  if (verifpersonnelexist = 0) then
+    raise personnelexiste;
+  end if;
+
+  select count(*) INTO verifpersonnelnondispo -- variable personnelnondispo
+  from Equipage 
+  where Matricule=Mat  -- qui est positif  si le personnel N’EST PAS dispo
+  and DateHeureDepart = DateHeureDep
+  and NoVol <> no_Vol; -- donc = 0 quand personnel dispo
+
+  if (verifpersonnelnondispo <> 0) then
+    raise personnelnondispo;
+  end if;
+
+   INSERT INTO Equipage (NoAffectation, noVol, DateHeureDepart, Matricule) VALUES (SEQAFFECTATION.nextval, no_Vol, DateHeureDep, Mat);
+  COMMIT;
+
+  EXCEPTION
+
+  WHEN volexiste THEN
+  DBMS_OUTPUT.PUT_LINE('Le vol n existe pas');
+
+  WHEN personnelexiste THEN
+  DBMS_OUTPUT.PUT_LINE('Le personnel n existe pas');
+
+  WHEN personnelnondispo THEN
+  DBMS_OUTPUT.PUT_LINE('Le personnel n est pas disponible');
+END;
+ 

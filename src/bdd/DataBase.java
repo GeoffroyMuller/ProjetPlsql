@@ -59,6 +59,7 @@ public class DataBase {
 	public static void compilerProcedure() {
 		try {
 			for (int i = 0; i < listProcedures.size(); i++) {
+				System.out.println("COMPILE::"+listProcedures.get(i));
 				executerQuery(listProcedures.get(i));
 				System.out.println("compilé");
 			}
